@@ -12,5 +12,7 @@ urlpatterns = [
     url(r'^tallas$', 'app.views.tallas'),
     url(r'^listado$', 'app.views.listado'),
     url(r'^proveedores$', 'app.views.proveedores'),
+    url(r'^entrada$', 'app.views.entrada'),
+    url(r'^salida$', 'app.views.salida'),
 
 ]

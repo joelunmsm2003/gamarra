@@ -55,6 +55,85 @@ def ValuesQuerySetToDict(vqs):
     return [item for item in vqs]
 
 
+@csrf_exempt
+def inventario(request,prenda):
+
+  	if request.method == 'GET':
+
+		data = Movimiento.objects.filter(tipo='Entrada').values('local__nombre','color__nombre','modelo__nombre','talla__nombre','cantidad','fecha')
+
+		response = HttpResponse(content_type='text/csv')
+
+		response['Content-Disposition'] = 'attachment; filename="Resumen.csv"'
+
+		writer = csv.writer(response)
+
+		writer.writerow(['Fecha','Cantidad','Modelo','Color','Talla','Destino'])
+
+
+
+        print 'Csv...'
+
+        for d in data:
+
+            writer.writerow([d['fecha'],d['cantidad'],d['modelo__nombre'],d['color__nombre'],d['talla__nombre'],d['local__nombre']])
+
+        return response   
+   
+
+
+
+@csrf_exempt
+def entrada(request):
+
+  	if request.method == 'GET':
+
+		data = Movimiento.objects.filter(tipo='Entrada').values('local__nombre','color__nombre','modelo__nombre','talla__nombre','cantidad','fecha')
+
+		response = HttpResponse(content_type='text/csv')
+
+		response['Content-Disposition'] = 'attachment; filename="Resumen.csv"'
+
+		writer = csv.writer(response)
+
+		writer.writerow(['Fecha','Cantidad','Modelo','Color','Talla','Destino'])
+
+
+
+        print 'Csv...'
+
+        for d in data:
+
+            writer.writerow([d['fecha'],d['cantidad'],d['modelo__nombre'],d['color__nombre'],d['talla__nombre'],d['local__nombre']])
+
+        return response   
+   
+
+@csrf_exempt
+def salida(request):
+
+  	if request.method == 'GET':
+
+		data = Movimiento.objects.filter(tipo='Salida').values('local__nombre','color__nombre','modelo__nombre','talla__nombre','cantidad','fecha')
+
+		response = HttpResponse(content_type='text/csv')
+
+		response['Content-Disposition'] = 'attachment; filename="Resumen.csv"'
+
+		writer = csv.writer(response)
+
+		writer.writerow(['Fecha','Cantidad','Modelo','Color','Talla','Destino'])
+
+
+
+        print 'Csv...'
+
+        for d in data:
+
+            writer.writerow([d['fecha'],d['cantidad'],d['modelo__nombre'],d['color__nombre'],d['talla__nombre'],d['local__nombre']])
+
+        return response   
+   
 
 
 @csrf_exempt

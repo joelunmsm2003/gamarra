@@ -205,15 +205,15 @@ app.controller('InCtrl', function($scope,$http,$location,$filter) {
     
       })
 
-      $http.get(host+'listado').success(function(data) {
+      // $http.get(host+'listado').success(function(data) {
 
-      	$scope.listado = data
+      // 	$scope.listado = data
 
-        $scope.listadoentrada  = $filter('filter')($scope.listado,{ 'tipo' : 'Entrada'})
+      //   $scope.listadoentrada  = $filter('filter')($scope.listado,{ 'tipo' : 'Entrada'})
 
-        $scope.listadosalida  = $filter('filter')($scope.listado,{ 'tipo' : 'Salida'})
+      //   $scope.listadosalida  = $filter('filter')($scope.listado,{ 'tipo' : 'Salida'})
     
-      })
+      // })
 
 
 
