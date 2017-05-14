@@ -35,7 +35,7 @@ from resizeimage import resizeimage
 from gamarra.settings import *
 from datetime import datetime,timedelta
 from django.contrib.auth import authenticate
-
+from django.db.models import Count,Sum
 from django.contrib.sites.shortcuts import get_current_site
 
 # Create your views here.
@@ -43,9 +43,6 @@ from django.contrib.sites.shortcuts import get_current_site
 def home(request):
 
 	user = request.user.id
-
-
-
 
 	return render(request, 'home.html',{})
 
@@ -134,6 +131,34 @@ def salida(request):
 
         return response   
    
+
+@csrf_exempt
+def totalizador(request,modelo):
+
+  	if request.method == 'GET':
+
+		data = Movimiento.objects.filter(modelo_id=modelo).values('color__nombre','talla__nombre','modelo__nombre').annotate(cantidad=Sum('cantidad'))
+
+		m = ValuesQuerySetToDict(data)
+
+		data_json = simplejson.dumps(m)
+
+		return HttpResponse(data_json, content_type="application/json")
+
+
+		response = HttpResponse(content_type='text/csv')
+
+		response['Content-Disposition'] = 'attachment; filename="Resumen.csv"'
+
+		writer = csv.writer(response)
+
+		writer.writerow(['Fecha','Cantidad','Modelo','Color','Talla','Destino'])
+
+        for d in data:
+
+            writer.writerow([d['fecha'],d['cantidad'],d['modelo__nombre'],d['color__nombre'],d['talla__nombre'],d['local__nombre']])
+
+        return response  
 
 
 @csrf_exempt

@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^proveedores$', 'app.views.proveedores'),
     url(r'^entrada$', 'app.views.entrada'),
     url(r'^salida$', 'app.views.salida'),
+    url(r'^totalizador/(\w+)$', 'app.views.totalizador'),
 
 ]
