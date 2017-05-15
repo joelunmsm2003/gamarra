@@ -32,7 +32,7 @@
 
 					
 					
-					<div class="col-4"  ng-click="almacen()">
+					<div class="col-3"  ng-click="almacen()">
 
 					<div ng-class="{activo: alm ,desactivo:!alm}">
 
@@ -44,7 +44,7 @@
 
 					</div>
 
-					<div class="col-4"  ng-click="torre()">
+					<div class="col-3"  ng-click="torre()">
 
 					<div ng-class="{activo: tor ,desactivo:!tor}">
 					<img class='img-fluid' src="img/baltic-coast-lighthouse-poland.png">
@@ -54,11 +54,21 @@
 					</div>
 
 
-					<div class="col-4" ng-click="centro()">
+					<div class="col-3" ng-click="centro()">
 
 					<div ng-class="{activo: cen ,desactivo:!cen}">
 
 					<img class='img-fluid' src="img/skyscrapper.png">
+
+					</div>
+
+					</div>
+
+					<div class="col-3" >
+
+					<div ng-class="{activo: cen ,desactivo:!cen}">
+
+					<a href='reporte.html'><img class='img-fluid' src="img/newspaper.png"></a>
 
 					</div>
 
@@ -188,7 +198,7 @@
 						<ul class='list-group'>
 					<li class='list-group-item' ng-class="{listin: l.tipo=='Entrada',listout:l.tipo=='Salida'}" ng ng-repeat="l in listado">
 			
-					<div style='width: 50%'>
+					<div style='width: 60%'>
 					
 					{{l.cantidad}}	
 					{{l.modelo__nombre}}	
@@ -198,13 +208,16 @@
 
 					</div>
 
-				
+				<div style='width: 20%'>
 
 
 					<span ng-if="l.tipo=='Entrada'">{{l.proveedor__nombre}}</span> 
 					<span ng-if="l.tipo=='Salida'">{{l.local__nombre}}</span>
 
-					<a class='btn btn-primary btn-sm'><img class='img-fluid' src='img/garbage.png'></a>
+				</div>
+					<div style='width: 20%; '  ng-click='eliminap(l.id)'>
+
+					<a  class='btn btn-primary btn-sm' ><img class='img-fluid' src='img/garbage.png'></a>
 					
 					</div>
 

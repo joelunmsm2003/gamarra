@@ -216,6 +216,89 @@ app.controller('InCtrl', function($scope,$http,$location,$filter) {
       })
 
 
+      $scope.eliminap = function(data){
+
+          $http.get(host+'elimina/'+data).success(function(data) {
+
+                      $http.get(host+'listado').success(function(data) {
+
+                      $scope.listado = data
+
+                      $scope.listadoentrada  = $filter('filter')($scope.listado,{ 'tipo' : 'Entrada'})
+
+                      $scope.listadosalida  = $filter('filter')($scope.listado,{ 'tipo' : 'Salida'})
+
+                      })
+
+
+
+
+        
+          })
+
+      }
+
+      $scope.traertotalizador = function(data){
+
+        console.log(data)
+
+        $scope.id_modelo = data
+
+        $http.get(host+'totalizador/'+data+'/'+5).success(function(data) {
+
+          console.log('hhdhd',data[0])
+
+          $scope.totaldata = data
+
+    
+        })
+
+
+      }
+
+      $scope.totalt = function(data){
+
+        console.log(data,$scope.id_modelo)
+
+        if (data==5){
+
+          $scope.titulo ='Almacen'
+
+        }
+         if (data==2){
+
+          $scope.titulo ='Torre'
+
+        }
+
+
+        if (data==3){
+
+          $scope.titulo ='Centro'
+
+        }
+
+
+          $http.get(host+'totalizador/'+$scope.id_modelo+'/'+data).success(function(data) {
+
+          console.log('hhdhd',data[0])
+
+          $scope.totaldata = data
+
+    
+        })
+
+
+      }
+
+
+
+
+      
+
+      $scope.yy='hhfhfhf'
+
+
 
 
       $scope.enviar = function(data){

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-US" ng-app="myApp" ng-controller="InCtrl">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="">
+    <meta name="keywords" content="Reservas, Hoteles, Booking">
+    <meta name="description" content="Reservas de Hoteles,Booking, Hoteles baratos en todo el Peru,Choose rooms and travel to Peru more easy">
+<!--libs-->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link href="https://fonts.googleapis.com/css?family=Lato:300|Raleway" rel="stylesheet">
+<script type="text/javascript" src='js/jquery.js'></script>
+<script type="text/javascript" src='js/bootstrap.js'></script>
+<script type="text/javascript" src='js/in.js'></script>
+
+
+
+
+<body>
+
+
+<br>
+
+				<div class='container'>
+
+					<div class="row">
+
+					
+					
+					<div class="col-3">
+
+					<div ng-class="{activo: alm ,desactivo:!alm}">
+
+					<a href='index.html'><img class='img-fluid' src="img/warehouse.png"></a>
+
+						
+					</div>
+					
+
+					</div>
+
+					<div class="col-3"  ng-click="torre()">
+
+					<div ng-class="{activo: tor ,desactivo:!tor}">
+					<img class='img-fluid' src="img/baltic-coast-lighthouse-poland.png">
+					</div>
+
+
+					</div>
+
+
+					<div class="col-3" ng-click="centro()">
+
+					<div ng-class="{activo: cen ,desactivo:!cen}">
+
+					<img class='img-fluid' src="img/skyscrapper.png">
+
+					</div>
+
+					</div>
+
+					<div class="col-3" >
+
+					<div ng-class="{activo: cen ,desactivo:!cen}">
+
+					<a href='reporte.html'><img class='img-fluid' src="img/newspaper.png"></a>
+
+					</div>
+
+					</div>
+
+
+				</div>
+
+				<br>
+
+<h2>Reportes</h2>
+
+<div class="btn-group" role="group" aria-label="Basic example">
+  <a href='http://192.168.1.40:1000/entrada' class="btn btn-secondary">Entrada</a>
+  <a href='http://192.168.1.40:1000/salida' class="btn btn-secondary">Salida</a>
+
+</div>
+<br></br>
+
+					<!-- <ul class="list-group">
+				  <li class="list-group-item" ng-repeat='m in modelos'><a href='http://192.168.1.40:1000/totalizador/{{m.id}}'>{{m.nombre}}</a></li>
+
+				</ul>
+	 -->
+				
+
+			<div id="accordion" role="tablist" aria-multiselectable="true" >
+
+				
+
+						<div class="card" >
+
+							<div ng-repeat='m in modelos'>
+						    <div class="card-header" role="tab" id="headingOne">
+						      <h5 class="mb-0">
+						        <a data-toggle="collapse" data-parent="#accordion" ng-click='traertotalizador(m.id)' href="#data{{m.id}}" aria-expanded="true" aria-controls="collapseOne">
+						          {{m.nombre}}
+						        </a>
+						      </h5>
+						    </div>
+
+						    <div id="data{{m.id}}" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+						      <div class="card-block">
+
+
+							
+
+							<div class="btn-group" role="group" aria-label="Basic example">
+
+
+							<a href='http://192.168.1.40:1000/totalizador/{{m.id}}' class='btn btn-primary'> Excel</a>
+							  
+							  <a  class="btn btn-secondary" ng-click='totalt(5)'>Almacen</a>
+							  <a  class="btn btn-secondary" ng-click='totalt(2)'>Torre</a>
+							   <a  class="btn btn-secondary" ng-click='totalt(3)'>Centro</a>
+							</div>
+
+							<br></br>
+							<h3>{{titulo}}</h3>
+
+						      <table class="table  table-responsive">
+								  <thead>
+								    <tr>
+								
+								      <th>Color</th>
+								      <th>S</th>
+								      <th>M</th>
+								      <th>L</th>
+								      <th>XL</th>
+								      <th>Total</th>
+								    </tr>
+								  </thead>
+								  <tbody>
+
+
+								    <tr ng-repeat='d in totaldata'>
+
+								    	<td>{{d.color__nombre}}</td>
+								 
+								      <td>{{d.caracteristica[0].total}}</td>
+								      <td>{{d.caracteristica[1].total}}</td>
+								      <td>{{d.caracteristica[2].total}}</td>
+								      <td>{{d.caracteristica[3].total}}</td>
+								      <td>{{d.cantidad}}</td> 
+								      
+								    </tr>
+								   
+								  </tbody>
+								</table>
+
+
+							      </div>
+							    </div>
+							  </div>
+						  </div>
+
+							
+				</div>
+
+
+</body>
+
+
+</html>
+
+

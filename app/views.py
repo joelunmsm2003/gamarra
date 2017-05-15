@@ -85,15 +85,15 @@ def entrada(request):
 
   	if request.method == 'GET':
 
-		data = Movimiento.objects.filter(tipo='Entrada').values('local__nombre','color__nombre','modelo__nombre','talla__nombre','cantidad','fecha')
+		data = Movimiento.objects.filter(tipo='Entrada').values('tipo','proveedor__nombre','color__nombre','modelo__nombre','talla__nombre','cantidad','fecha').order_by('-id')
 
 		response = HttpResponse(content_type='text/csv')
 
-		response['Content-Disposition'] = 'attachment; filename="Resumen.csv"'
+		response['Content-Disposition'] = 'attachment; filename="Entradas.csv"'
 
 		writer = csv.writer(response)
 
-		writer.writerow(['Fecha','Cantidad','Modelo','Color','Talla','Destino'])
+		writer.writerow(['Fecha','','Cantidad','Modelo','Color','Talla','Proveedor'])
 
 
 
@@ -101,7 +101,7 @@ def entrada(request):
 
         for d in data:
 
-            writer.writerow([d['fecha'],d['cantidad'],d['modelo__nombre'],d['color__nombre'],d['talla__nombre'],d['local__nombre']])
+            writer.writerow([d['fecha'][0:19],d['tipo'],d['cantidad'],d['modelo__nombre'],d['color__nombre'],d['talla__nombre'],d['proveedor__nombre']])
 
         return response   
    
@@ -111,15 +111,15 @@ def salida(request):
 
   	if request.method == 'GET':
 
-		data = Movimiento.objects.filter(tipo='Salida').values('local__nombre','color__nombre','modelo__nombre','talla__nombre','cantidad','fecha')
+		data = Movimiento.objects.filter(tipo='Salida').values('tipo','local__nombre','color__nombre','modelo__nombre','talla__nombre','cantidad','fecha').order_by('-id')
 
 		response = HttpResponse(content_type='text/csv')
 
-		response['Content-Disposition'] = 'attachment; filename="Resumen.csv"'
+		response['Content-Disposition'] = 'attachment; filename="Salidas.csv"'
 
 		writer = csv.writer(response)
 
-		writer.writerow(['Fecha','Cantidad','Modelo','Color','Talla','Destino'])
+		writer.writerow(['Fecha','','Cantidad','Modelo','Color','Talla','Destino'])
 
 
 
@@ -127,17 +127,56 @@ def salida(request):
 
         for d in data:
 
-            writer.writerow([d['fecha'],d['cantidad'],d['modelo__nombre'],d['color__nombre'],d['talla__nombre'],d['local__nombre']])
+            writer.writerow([d['fecha'][0:19],d['tipo'],d['cantidad'],d['modelo__nombre'],d['color__nombre'],d['talla__nombre'],d['local__nombre']])
 
         return response   
    
 
 @csrf_exempt
-def totalizador(request,modelo):
+def totalizador(request,modelo,ubicacion):
 
   	if request.method == 'GET':
 
-		data = Movimiento.objects.filter(modelo_id=modelo).values('color__nombre','talla__nombre','modelo__nombre').annotate(cantidad=Sum('cantidad'))
+  		name = Modelo.objects.get(id=modelo).nombre
+
+  		fecha= datetime.today()
+
+		data = Movimiento.objects.filter(modelo_id=modelo,local_id=ubicacion).values('color','color__nombre').annotate(cantidad=Sum('cantidad'))
+
+		if int(ubicacion) == 5:
+
+			data = Movimiento.objects.filter(modelo_id=modelo).values('color','color__nombre').annotate(cantidad=Sum('cantidad'))
+
+
+		for i in range(len(data)):
+
+			tallas = Talla.objects.all().values('id','nombre')
+
+			for ta in range(len(tallas)):
+
+
+
+				tt = Movimiento.objects.filter(modelo_id=modelo,color_id=data[i]['color'],talla_id=tallas[ta]['id'],local_id=ubicacion).values('talla__nombre').annotate(totaltalla=Sum('cantidad'))
+				
+				if int(ubicacion) == 5:
+
+					tt = Movimiento.objects.filter(modelo_id=modelo,color_id=data[i]['color'],talla_id=tallas[ta]['id']).values('talla__nombre').annotate(totaltalla=Sum('cantidad'))
+				
+
+
+
+				if tt.count() > 0:
+
+					tallas[ta]['total'] = tt[0]['totaltalla']
+
+				else:
+
+					tallas[ta]['total'] =0
+
+
+			tallas = ValuesQuerySetToDict(tallas)
+
+			data[i]['caracteristica'] = tallas
 
 		m = ValuesQuerySetToDict(data)
 
@@ -148,15 +187,16 @@ def totalizador(request,modelo):
 
 		response = HttpResponse(content_type='text/csv')
 
-		response['Content-Disposition'] = 'attachment; filename="Resumen.csv"'
+		response['Content-Disposition'] = 'attachment; filename="'+name+'_'+str(fecha)[0:10]+'.csv"'
 
 		writer = csv.writer(response)
 
-		writer.writerow(['Fecha','Cantidad','Modelo','Color','Talla','Destino'])
+		writer.writerow(['Color','S','M','L','XL','Total'])
 
         for d in data:
 
-            writer.writerow([d['fecha'],d['cantidad'],d['modelo__nombre'],d['color__nombre'],d['talla__nombre'],d['local__nombre']])
+
+            writer.writerow([d['color__nombre'],d['caracteristica'][0]['total'],d['caracteristica'][1]['total'],d['caracteristica'][2]['total'],d['caracteristica'][3]['total'],d['cantidad']])
 
         return response  
 
@@ -183,6 +223,19 @@ def colores(request):
 		m = Color.objects.all().values('id','nombre')
 
 		m = ValuesQuerySetToDict(m)
+
+		data_json = simplejson.dumps(m)
+
+		return HttpResponse(data_json, content_type="application/json")
+
+
+@csrf_exempt
+def elimina(request,id):
+
+
+		m = Movimiento.objects.get(id=id).delete()
+
+		m = ValuesQuerySetToDict('m')
 
 		data_json = simplejson.dumps(m)
 
@@ -260,8 +313,17 @@ def ingreso(request):
 
 			tipo= data['tipo']
 
-			Movimiento(proveedor_id=proveedor,color_id=color,local_id=local,modelo_id=modelo,talla_id=talla,cantidad=cantidad,tipo=tipo,fecha=fecha).save()
+			if tipo=='Entrada':
 
+				Movimiento(proveedor_id=proveedor,color_id=color,local_id=local,modelo_id=modelo,talla_id=talla,cantidad=cantidad,tipo=tipo,fecha=fecha).save()
+
+
+			if tipo=='Salida':
+
+				Movimiento(proveedor_id=proveedor,color_id=color,local_id=local,modelo_id=modelo,talla_id=talla,cantidad=-cantidad,tipo=tipo,fecha=fecha).save()
+
+
+			
 			data_json = simplejson.dumps('exito')
 
 		return HttpResponse(data_json, content_type="application/json")
