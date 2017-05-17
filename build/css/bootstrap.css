@@ -6,7 +6,7 @@
  */
 /*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */
 html {
-  font-family: "Open Sans";
+  font-family: "Lato";
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%; }
@@ -113,7 +113,7 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: "Open Sans";
+  font-family: "Lato";
   font-size: 100%;
   line-height: 1.15;
   margin: 0; }
