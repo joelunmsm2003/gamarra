@@ -200,6 +200,74 @@ def totalizador(request,modelo,ubicacion):
 
         return response  
 
+@csrf_exempt
+def total(request,ubicacion):
+
+  	if request.method == 'GET':
+
+  		modelos = Modelo.objects.all().values('id','nombre')
+
+  		for mo in range(len(modelos)):
+
+	  		fecha = datetime.today()
+
+			data = Movimiento.objects.filter(modelo_id=modelos[mo]['id'],local_id=ubicacion).values('color','color__nombre').annotate(cantidad=Sum('cantidad'))
+
+			if int(ubicacion) == 5:
+
+				data = Movimiento.objects.filter(modelo_id=modelos[mo]['id']).values('color','color__nombre').annotate(cantidad=Sum('cantidad'))
+
+
+			for i in range(len(data)):
+
+				tallas = Talla.objects.all().values('id','nombre')
+
+				for ta in range(len(tallas)):
+
+					tt = Movimiento.objects.filter(modelo_id=modelos[mo]['id'],color_id=data[i]['color'],talla_id=tallas[ta]['id'],local_id=ubicacion).values('talla__nombre').annotate(totaltalla=Sum('cantidad'))
+					
+					if int(ubicacion) == 5:
+
+						tt = Movimiento.objects.filter(modelo_id=modelos[mo]['id'],color_id=data[i]['color'],talla_id=tallas[ta]['id']).values('talla__nombre').annotate(totaltalla=Sum('cantidad'))
+				
+					if tt.count() > 0:
+
+						tallas[ta]['total'] = tt[0]['totaltalla']
+
+					else:
+
+						tallas[ta]['total'] =0
+
+
+				tallas = ValuesQuerySetToDict(tallas)
+
+				data[i]['caracteristica'] = tallas
+
+			data = ValuesQuerySetToDict(data)
+
+			modelos[mo]['info']=data
+
+
+		m = ValuesQuerySetToDict(modelos)
+
+		data_json = simplejson.dumps(m)
+
+		return HttpResponse(data_json, content_type="application/json")
+
+
+		response = HttpResponse(content_type='text/csv')
+
+		response['Content-Disposition'] = 'attachment; filename="'+name+'_'+str(fecha)[0:10]+'.csv"'
+
+		writer = csv.writer(response)
+
+		writer.writerow(['Color','S','M','L','XL','Total'])
+
+        for d in data:
+
+            writer.writerow([d['color__nombre'],d['caracteristica'][0]['total'],d['caracteristica'][1]['total'],d['caracteristica'][2]['total'],d['caracteristica'][3]['total'],d['cantidad']])
+
+        return response  
 
 @csrf_exempt
 def modelos(request):

@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^salida$', 'app.views.salida'),
     url(r'^totalizador/(\w+)/(\w+)$', 'app.views.totalizador'),
     url(r'^elimina/(\w+)$', 'app.views.elimina'),
+    url(r'^total/(\w+)$', 'app.views.total'),
 
 ]
