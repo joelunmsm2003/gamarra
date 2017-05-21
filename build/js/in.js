@@ -256,11 +256,9 @@ app.controller('InCtrl', function($scope,$http,$location,$filter) {
 
       }
 
-      $scope.totalt = function(data){
+       $scope.trae = function(data){
 
-        console.log(data,$scope.id_modelo)
-
-        if (data==5){
+          if (data==5){
 
           $scope.titulo ='Almacen'
 
@@ -279,18 +277,37 @@ app.controller('InCtrl', function($scope,$http,$location,$filter) {
         }
 
 
-          $http.get(host+'totalizador/'+$scope.id_modelo+'/'+data).success(function(data) {
+        $http.get(host+'total/'+data).success(function(data) {
 
-          console.log('hhdhd',data[0])
+          
 
-          $scope.totaldata = data
+          $scope.totalxubicacion = data
+
+          console.log('$scope.totalxubicacion',$scope.totalxubicacion)
+
+
 
     
         })
 
 
+
       }
 
+
+
+      $http.get(host+'total/5').success(function(data) {
+
+          
+
+          $scope.totalxubicacion = data
+
+          console.log('$scope.totalxubicacion',$scope.totalxubicacion)
+
+
+
+    
+        })
 
 
 

@@ -209,6 +209,8 @@ def total(request,ubicacion):
 
   		for mo in range(len(modelos)):
 
+  			tm=0
+
 	  		fecha = datetime.today()
 
 			data = Movimiento.objects.filter(modelo_id=modelos[mo]['id'],local_id=ubicacion).values('color','color__nombre').annotate(cantidad=Sum('cantidad'))
@@ -219,6 +221,8 @@ def total(request,ubicacion):
 
 
 			for i in range(len(data)):
+
+				data[i]['cantidad'] = abs(data[i]['cantidad'])
 
 				tallas = Talla.objects.all().values('id','nombre')
 
@@ -232,7 +236,9 @@ def total(request,ubicacion):
 				
 					if tt.count() > 0:
 
-						tallas[ta]['total'] = tt[0]['totaltalla']
+						tallas[ta]['total'] = abs(tt[0]['totaltalla'])
+
+						tm = tm + tallas[ta]['total']
 
 					else:
 
@@ -242,6 +248,8 @@ def total(request,ubicacion):
 				tallas = ValuesQuerySetToDict(tallas)
 
 				data[i]['caracteristica'] = tallas
+
+			modelos[mo]['totalmodelo'] = abs(tm)
 
 			data = ValuesQuerySetToDict(data)
 
