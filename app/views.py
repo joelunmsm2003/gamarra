@@ -5,7 +5,7 @@ from app.models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import csv
-from datetime import datetime
+import datetime
 import xlrd
 import pandas as pd
 import json
@@ -93,6 +93,23 @@ def prendas(request):
         serializer = PrendaSerializer(p, many=True)
         return JsonResponse(serializer.data, safe=False)
 
+
+@csrf_exempt
+def ventasdeldia(request):
+    """
+    List all code snippets, or create a new snippet.
+    """
+    if request.method == 'POST':
+
+    	fecha = json.loads(request.body)['fecha']
+
+    	ubicacion = json.loads(request.body)['ubicacion']['id']
+
+    	print fecha
+
+        p = Prenda.objects.filter(fecha_venta__gte=fecha,ubicacion_id=ubicacion).order_by('-id')
+        serializer = PrendaSerializer(p, many=True)
+        return JsonResponse(serializer.data, safe=False)
 
 
 @csrf_exempt
@@ -199,7 +216,7 @@ def registraventa(request):
 
 		update['vendedora_id']=data['vendedora_id']
 
-		hoy=datetime.today()
+		hoy=datetime.date.today()
 
 		update['fecha_venta']=hoy
 
@@ -213,7 +230,7 @@ def registraventa(request):
 
 			Prenda.objects.filter(id=id).update(**update)
 
-		else:
+		if 'sincodigo' in data.keys():
 
 			Prenda(**update).save()
 

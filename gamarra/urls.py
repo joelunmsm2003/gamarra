@@ -28,6 +28,7 @@ urlpatterns = [
     url('registraventa/', registraventa),
     url('movimiento/', movimiento),
     url('guarda/', guarda),
+    url('ventasdeldia/', ventasdeldia),
     url('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 
     # url(r'^$', 'app.views.home'),
