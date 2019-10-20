@@ -1,6 +1,6 @@
 """
 -----------------------DEMO"""
-#WTFFFFF
+#WESTO ES UN CAMBIO
 
 """
 Django settings for gamarra project.
