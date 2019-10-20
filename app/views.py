@@ -9,6 +9,7 @@ import datetime
 import xlrd
 import pandas as pd
 import json
+from datetime import datetime, date, time, timedelta
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -103,11 +104,16 @@ def ventasdeldia(request):
 
     	fecha = json.loads(request.body)['fecha']
 
+    	start = datetime.strptime(fecha, '%Y-%m-%d')
+
+    	end = start + timedelta(days=1) 
+
+
     	ubicacion = json.loads(request.body)['ubicacion']['id']
 
     	print fecha
 
-        p = Prenda.objects.filter(fecha_venta__gte=fecha,ubicacion_id=ubicacion).order_by('-id')
+        p = Prenda.objects.filter(fecha_venta__gte=start,fecha_venta__lt=end,ubicacion_id=ubicacion).order_by('-id')
         serializer = PrendaSerializer(p, many=True)
         return JsonResponse(serializer.data, safe=False)
 
@@ -216,7 +222,7 @@ def registraventa(request):
 
 		update['vendedora_id']=data['vendedora_id']
 
-		hoy=datetime.date.today()
+		hoy=date.today()
 
 		update['fecha_venta']=hoy
 
