@@ -12,7 +12,7 @@ router.register(r'groups', GroupViewSet)
 
 
 
-##Agregando par el commit
+##XXXXXX
 
 
 urlpatterns = [
