@@ -1,1 +1,0 @@
-[{"model": "app.local", "pk": 1, "fields": {"nombre": "Centro"}}, {"model": "app.local", "pk": 2, "fields": {"nombre": "Torre"}}, {"model": "app.local", "pk": 3, "fields": {"nombre": "Canepa"}}]
