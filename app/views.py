@@ -200,7 +200,7 @@ def registraventa(request):
     """
     if request.method == 'POST':
 
-		data = json.loads(request.body)
+		data = json.loads(request.body)['data']
 
 		update= {}
 

@@ -111,6 +111,8 @@ class Vendedora(models.Model):
 
 
 
+
+
     @property
     def termometro(self):
         
