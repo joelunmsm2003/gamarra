@@ -29,9 +29,9 @@ class TallaAdmin(admin.ModelAdmin):
 @admin.register(Prenda)
 class PrendaAdmin(admin.ModelAdmin):
 	list_display = ('id','ubicacion','modelo','talla','color','fecha_creacion','fecha_ingreso','fecha_venta','precio','vendedora')
-	#list_filter = ('ubicacion','origen')
+	list_filter = ('ubicacion','origen')
 	#list_editable = ('',)
-	#search_fields = ('codigo',)
+	search_fields = ('id',)
 
 
 @admin.register(Movimiento)

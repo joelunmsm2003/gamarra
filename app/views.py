@@ -202,6 +202,8 @@ def registraventa(request):
 
 		data = json.loads(request.body)['data']
 
+		print 'registraventa...',data
+
 		update= {}
 
 		update['ubicacion_id']=data['ubicacion']['id']
@@ -221,6 +223,10 @@ def registraventa(request):
 		update['modelo_id']=data['modelo_id']
 
 		update['vendedora_id']=data['vendedora_id']
+
+		update['vendedora2_id']=data['vendedora_id2']
+
+		update['pormayor']=data['pormayor']
 
 		hoy=date.today()
 

@@ -85,13 +85,15 @@ class Prenda(models.Model):
     observacion = models.CharField(max_length=1000, blank=True, null=True)
     nombre_modelo = models.CharField(max_length=1000, blank=True, null=True)    
     venta = models.BooleanField(blank=True,default=False)
+    pormayor = models.BooleanField(blank=True,default=False)
     sin_codigo = models.BooleanField(blank=True,default=False)
     precio = models.CharField(max_length=1000, blank=True, null=True)
     bono = models.CharField(max_length=1000, blank=True, null=True)
     fecha_venta = models.DateTimeField(blank=True, null=True)
     boleta = models.CharField(max_length=1000, blank=True, null=True)
     vendedora = models.ForeignKey('Vendedora', models.DO_NOTHING, db_column='vendedora', blank=True, null=True)
-    
+    vendedora2 = models.ForeignKey('Vendedora', models.DO_NOTHING, db_column='vendedora2', blank=True, null=True,related_name='vendedora2')
+        
 
     class Meta:
         managed = True
