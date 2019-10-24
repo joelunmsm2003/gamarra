@@ -108,6 +108,8 @@ def ventasdeldia(request):
 
     	end = start + timedelta(days=1) 
 
+    	print 'fechas...',start,end
+
 
     	ubicacion = json.loads(request.body)['ubicacion']['id']
 
@@ -200,11 +202,11 @@ def registraventa(request):
     """
     if request.method == 'POST':
 
-		data = json.loads(request.body)['data']
+		update={}
 
-		print 'registraventa...',data
+		data=json.loads(request.body)['data']
 
-		update= {}
+		print data
 
 		update['ubicacion_id']=data['ubicacion']['id']
 
@@ -226,7 +228,10 @@ def registraventa(request):
 
 		update['vendedora2_id']=data['vendedora_id2']
 
-		update['pormayor']=data['pormayor']
+		try:
+			update['pormayor']=data['pormayor']
+		except:
+			pass
 
 		hoy=date.today()
 

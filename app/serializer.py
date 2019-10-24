@@ -60,4 +60,4 @@ class PrendaSerializer(serializers.ModelSerializer):
 	
     class Meta:
         model = Prenda
-        fields = ['id','codigo','modelo_id','ubicacion','vendedora','vendedora_id','origen','ubicacion','modelo','talla','color','fecha_creacion','boleta','precio','venta','fecha_ingreso','venta','fecha_venta','observacion','bono']
+        fields = ['id','codigo','modelo_id','pormayor','ubicacion','vendedora','vendedora_id','origen','ubicacion','modelo','talla','color','fecha_creacion','boleta','precio','venta','fecha_ingreso','venta','fecha_venta','observacion','bono']
